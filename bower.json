@@ -1,0 +1,28 @@
+{
+    "name": "team-avesta-angular-validation",
+    "version": "1.0.0",
+    "homepage": "https://github.com/team-avesta/validation.git",
+    "authors": [
+        "Aakash"
+    ],
+    "description": "Client-side Validation for AngularJS",
+    "main":["dist/angular-validation.js","dist/angular-validation-rule.js"] ,
+    "keywords": [
+        "angular",
+        "angularjs",
+        "validation",
+        "angular validation",
+        "validator",
+        "client-side"
+    ],
+    "license": "MIT",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+    }
+}
