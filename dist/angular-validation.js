@@ -398,14 +398,14 @@ angular.module('validation.directive', ['validation.provider']);
          * @param ctrl
          * @returns {}
          */
-        var validFunc = function(element, validMessage, validation, scope, ctrl, attrs) {
+        var validFunc = function(element, validMessage, validation, scope, ctrl, attrs, fromBlur) {
             var messageToShow = validMessage || $validationProvider.getDefaultMsg(validation).success;
             var validCallback = $parse(attrs.validCallback);
             var messageId = attrs.messageId;
             var validationGroup = attrs.validationGroup;
             var messageElem;
 
-            if (ctrl.$touched) {
+            if (ctrl.$touched || fromBlur) {
                 if (messageId || validationGroup) messageElem = angular.element(document.querySelector('#' + (messageId || validationGroup)));
                 else messageElem = $validationProvider.getMsgElement(element);
 
@@ -439,25 +439,25 @@ angular.module('validation.directive', ['validation.provider']);
          * @param ctrl
          * @returns {}
          */
-        var invalidFunc = function(element, validMessage, validation, scope, ctrl, attrs) {
+        var invalidFunc = function(element, validMessage, validation, scope, ctrl, attrs, fromBlur) {
             var messageToShow = validMessage || $validationProvider.getDefaultMsg(validation).error;
             var invalidCallback = $parse(attrs.invalidCallback);
             var messageId = attrs.messageId;
             var validationGroup = attrs.validationGroup;
             var messageElem;
+            if (ctrl.$touched || fromBlur) {
+                if (messageId || validationGroup) messageElem = angular.element(document.querySelector('#' + (messageId || validationGroup)));
+                else messageElem = $validationProvider.getMsgElement(element);
 
-            if (messageId || validationGroup) messageElem = angular.element(document.querySelector('#' + (messageId || validationGroup)));
-            else messageElem = $validationProvider.getMsgElement(element);
-
-            if (element.attr('no-validation-message')) {
-                messageElem.css('display', 'none');
-            } else if ($validationProvider.showErrorMessage && messageToShow) {
-                messageElem.html('').append($compile($validationProvider.getErrorHTML(messageToShow, element, attrs))(scope));
-                messageElem.css('display', '');
-            } else {
-                messageElem.css('display', 'none');
+                if (element.attr('no-validation-message')) {
+                    messageElem.css('display', 'none');
+                } else if ($validationProvider.showErrorMessage && messageToShow) {
+                    messageElem.html('').append($compile($validationProvider.getErrorHTML(messageToShow, element, attrs))(scope));
+                    messageElem.css('display', '');
+                } else {
+                    messageElem.css('display', 'none');
+                }
             }
-
             ctrl.$setValidity(ctrl.$name, false);
             invalidCallback(scope, {
                 message: messageToShow
@@ -545,7 +545,7 @@ angular.module('validation.directive', ['validation.provider']);
          * @param value
          * @returns {}
          */
-        var checkValidation = function(scope, element, attrs, ctrl, validation, value) {
+        var checkValidation = function(scope, element, attrs, ctrl, validation, value, fromBlur) {
             var validators = validation.slice(0);
             var validatorExpr = validators[0].trim();
             var paramIndex = validatorExpr.indexOf('=');
@@ -558,17 +558,21 @@ angular.module('validation.directive', ['validation.provider']);
             var validationGroup = attrs.validationGroup;
             var valid = {
                 success: function(message) {
-                    validFunc(element, message || attrs[successMessage], validator, scope, ctrl, attrs);
+                    validFunc(element, message || attrs[successMessage], validator, scope, ctrl, attrs, fromBlur);
                     if (leftValidation.length) {
-                        return checkValidation(scope, element, attrs, ctrl, leftValidation, value);
+                        return checkValidation(scope, element, attrs, ctrl, leftValidation, value, fromBlur);
                     } else {
                         return true;
                     }
                 },
                 error: function(message) {
-                    return invalidFunc(element, message || attrs[errorMessage], validator, scope, ctrl, attrs);
+                    return invalidFunc(element, message || attrs[errorMessage], validator, scope, ctrl, attrs, fromBlur);
                 }
             };
+            // console.log(ctrl.$touched);
+            // if (!ctrl.$touched) {
+            //     return;
+            // }
 
             if (expression === undefined) {
                 console.error('You are using undefined validator "%s"', validator);
@@ -800,7 +804,7 @@ angular.module('validation.directive', ['validation.provider']);
                 element.bind('blur', function() {
                     var value = scope.$eval(ngModel);
                     scope.$apply(function() {
-                        checkValidation(scope, element, attrs, ctrl, validation, value);
+                        checkValidation(scope, element, attrs, ctrl, validation, value, true);
                     });
                 });
 
@@ -834,7 +838,13 @@ angular.module('validation.directive', ['validation.provider']);
                         else $validationProvider.getMsgElement(element).html('');
                         return;
                     }
+                    // if (ctrl.$touched) {
                     checkValidation(scope, element, attrs, ctrl, validation, value);
+                    // } else {
+                    //     ctrl.$setValidity(ctrl.$name, ctrl.$name.$valid);
+                    // }
+
+
                 });
 
                 $timeout(function() {
