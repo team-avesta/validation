@@ -1,4 +1,4 @@
-team-avesta-angular-validation 3.0.0
+team-avesta-angular-validation 3.0.1
 =========================
 [![NPM version](https://badge.fury.io/js/angular-validation.svg)](http://badge.fury.io/js/angular-validation)
 [![Build Status](https://travis-ci.org/huei90/angular-validation.png?branch=master)](https://travis-ci.org/huei90/angular-validation)

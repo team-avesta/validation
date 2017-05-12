@@ -10,6 +10,9 @@
                 email: /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/,
                 number: /^\d+$/,
                 lastsalsh: /\/$/,
+                nocommalast: function(value) {
+                    return !(value.charAt(value.length - 1) === ',') ;
+                },
                 minlength: function(value, scope, element, attrs, param) {
                     return value && value.length >= param;
                 },
@@ -38,6 +41,10 @@
                 lastsalsh: {
                     error: 'Last character should be /',
                     success: 'It\'s /'
+                },
+                nocommalast: {
+                    error: 'Last character should not be ,',
+                    success: 'It\'s ,'
                 },
                 minlength: {
                     error: 'This should be longer',
