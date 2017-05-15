@@ -803,9 +803,13 @@ angular.module('validation.directive', ['validation.provider']);
                 //  if (validMethod === 'blur') {
                 element.bind('blur', function() {
                     var value = scope.$eval(ngModel);
-                    scope.$apply(function() {
-                        checkValidation(scope, element, attrs, ctrl, validation, value, true);
-                    });
+                    //condition for check any digest cycle in progess
+                    //if any digest cycle in progess then bellow code is giving error
+                    if (!scope.$$phase) {
+                        scope.$apply(function() {
+                            checkValidation(scope, element, attrs, ctrl, validation, value, true);
+                        });
+                    }
                 });
 
                 //   return;
