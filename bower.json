@@ -1,12 +1,12 @@
 {
     "name": "team-avesta-angular-validation",
-    "version": "3.0.2",
+    "version": "3.0.3",
     "homepage": "https://github.com/team-avesta/validation.git",
     "authors": [
         "Aakash"
     ],
     "description": "Client-side Validation for AngularJS",
-    "main":["dist/angular-validation.js","dist/angular-validation-rule.js"] ,
+    "main":["dist/angular-validation.js"] ,
     "keywords": [
         "angular",
         "angularjs",
