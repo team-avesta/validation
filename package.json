@@ -1,6 +1,6 @@
 {
   "name": "team-avesta-angular-validation",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "angular validation package for forms",
   "main": "dist/angular-validation.js",
   "scripts": {
