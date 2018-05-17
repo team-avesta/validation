@@ -1,0 +1,24 @@
+{
+  "name": "team-avesta-angular-validation",
+  "version": "1.0.0",
+  "description": "angular validation package for forms",
+  "main": "dist/angular-validation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/team-avesta/validation.git"
+  },
+  "keywords": [
+    "form",
+    "validation",
+    "angularjs"
+  ],
+  "author": "Avesta Technologies",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/team-avesta/validation/issues"
+  },
+  "homepage": "https://github.com/team-avesta/validation#readme"
+}
